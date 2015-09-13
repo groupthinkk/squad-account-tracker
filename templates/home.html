@@ -16,6 +16,18 @@
             </fieldset>
         </form>
         <br>
+        <form method='post' class="pure-form pure-form-stacked" id="main_form">
+            <fieldset>
+                <label for="account_list">Worker_id List</label>
+                <textarea class="pure-input-2-3" id="worker_id_list" name="worker_id_list" placeholder="Use comma separate worker_ids, no spaces (i.e. acc1,acc2,acc3)"></textarea>
+                <label for="subject">Message Subject</label>
+                <input class="pure-input-2-3" id="subject" type="text" placeholder="Subject">
+                <label for="message_text">Message Subject</label>
+                <textarea class="pure-input-2-3" id="message_text" name="message_text" placeholder="Message text"></textarea>
+                <button type="submit" class="pure-button pure-button-primary">Send</button>
+            </fieldset>
+        </form>
+        <br>
         <a class="pure-button" href="/downloadcsv">Download CSV</a>
       </center>
     </div>
