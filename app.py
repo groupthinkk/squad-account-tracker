@@ -25,6 +25,12 @@ def index():
                 account_list = request.form['account_list'].split(",")
                 for account in account_list:
                     collect_follower_count.add_username(account)
+        elif 'bonus' in request.form:
+            worker_id_list = request.form['worker_id_list'].split(",")
+            hit_id = request.form['hit_id']
+            bonus = float(request.form['bonus'])
+            reason = request.form['reason']
+            turk_functions.give_bonus(worker_id_list, hit_id, bonus, reason)
         else:
             worker_id_list = request.form['worker_id_list'].split(",")
             subject = request.form['subject']

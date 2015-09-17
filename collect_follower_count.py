@@ -16,7 +16,7 @@ access_token='2963667.375701a.3eae9d0208074293b2bfe5c0c917f1b1'
 
 
 def add_username(username):
-    if db.collection.find_one({"username": username}) != None:
+    if db['account_list'].find_one({"username": username}) != None:
         return False
     url = ('https://api.instagram.com/v1/users/search?q=%s&access_token=%s') % (username, access_token)
     j = requests.get(url)

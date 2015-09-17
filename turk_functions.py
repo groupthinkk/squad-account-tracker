@@ -38,11 +38,22 @@ def set_qualifications(worker_ids, scores, qualification_id):
             if result != []:
                 print result
 
-def give_bonus(worker_ids, assignment_id, bonus, reason):
-    for worker_id in worker_ids:
-        result = connection.grant_bonus(worker_id, assignment_id, bonus, reason)
-        if result != []:
-            print result
+def give_bonus(worker_ids, hit_id, bonus, reason):
+    payment = Price(bonus)
+    assignments = []
+    page = 1
+    while (1):
+        res = connection.get_assignments(hit_id, page_size=100, page_number=str(page))
+        if len(res) > 0:
+            assignments.extend(res)
+            page += 1
+        else:
+            break
+    for assignment in assignments:
+        if assignment.WorkerId in worker_ids:
+            result = connection.grant_bonus(assignment.WorkerId, assignment.AssignmentId, payment, reason)
+            if result != []:
+                print result
 
 def create_hit(url=None, title=None, description=None, keywords=None, reward_amount=None, max_assignments=None, duration_in_minutes=None, lifetime_in_days=None, approval_delay_in_days=None, qualification_percent_approved=None, qualification_hits_approved=None):
     url = url or "https://squadtest.herokuapp.com/"
@@ -84,3 +95,6 @@ def create_hit(url=None, title=None, description=None, keywords=None, reward_amo
         qualifications=qualifications
     )
     print result
+
+if __name__ == '__main__':
+    give_bonus(['ASGBIM0YYOZSQ'], '3L84EBDQ37UBH37KXPIX5KJRWEIKK1', .01, "test")
