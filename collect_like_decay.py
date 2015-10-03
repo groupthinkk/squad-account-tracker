@@ -48,7 +48,7 @@ def get_user_posts(user_id):
         except InstagramAPIError as e:
             #print e.status_code
             if (int(e.status_code) == 429):
-                #print API_Queue
+                print "Switching API key"
                 getNextApi()
                 if (len(API_Queue) == 0):
                     print "Out of API keys"
