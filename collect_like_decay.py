@@ -67,7 +67,7 @@ def add_username(username):
             break
         except InstagramAPIError as e:
             if (int(e.status_code) == 429):
-                print API_Queue
+                #print API_Queue
                 getNextApi()
                 if (len(API_Queue) == 0):
                     sys.exit(0)
@@ -83,6 +83,7 @@ def add_username(username):
 def do_pull():
     account_list = db['like_account_list'].find()
     for account in account_list:
+        print account['username']
         posts, next = get_user_posts(account['user_id'])
         if posts == False:
             continue
