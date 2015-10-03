@@ -63,7 +63,7 @@ def download_like_csv():
 @app.route('/initapikeys', methods = ["GET"])
 def init_api_keys():
     collect_like_decay.init_API_queue()
-    return redirect(url_for('/'))
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)
