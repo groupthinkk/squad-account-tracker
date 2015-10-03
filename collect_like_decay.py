@@ -49,13 +49,12 @@ def get_user_posts(user_id):
             print e.status_code
             print e.status_code == 429
             if (e.status_code == "429"):
-                print "got in the box"
                 getNextApi()
                 if (len(API_Queue) == 0):
-                    print "Ran out of API keys"
                     sys.exit(1)
             if (e.status_code == "400"):
                 print "User %s is private" % (user_id)
+                return False
     return ret
 
 def add_username(username):
@@ -69,22 +68,24 @@ def add_username(username):
             if (e.status_code == "429"):
                 getNextApi()
                 if (len(API_Queue) == 0):
-                    print "Ran out of API keys"
                     sys.exit(0)
     for data in datalist:
         if data.username == username:
-            db['like_account_list'].insert({'username': username,'user_id':str(data.id)})
-            return True
+            if get_user_posts(str(data.id)) != False:
+                db['like_account_list'].insert({'username': username,'user_id':str(data.id)})
+                return True
+            else:
+                return False
     return False
 
 def do_pull():
     account_list = db['like_account_list'].find()
     for account in account_list:
         posts, next = get_user_posts(account['user_id'])
+        if posts == False:
+            continue
         data_list = []
-        #print posts
         for post in posts:
-            #print post
             data = {
                 'post_id': post.id,
                 'likes': post.like_count,
@@ -95,7 +96,6 @@ def do_pull():
                 'time': dt.datetime.utcnow()
             }
             data_list.append(data)
-        #print data_list
         db['like_log'].insert(data_list)
 
 def export_like_data(f):
