@@ -37,7 +37,7 @@ def init_API_queue():
 def get_user_posts(user_id):
     while(1):
         try:
-            ret = API_Queue[0].user_recent_media(user_id=user_id, count=40)
+            ret = API_Queue[0].user_recent_media(user_id=user_id, count=10)
             break
         except InstagramAPIError as e:
             if (e.status_code == 429):
