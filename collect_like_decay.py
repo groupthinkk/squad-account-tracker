@@ -52,6 +52,8 @@ def get_user_posts(user_id):
                 if (len(API_Queue) == 0):
                     print "Ran out of API keys"
                     sys.exit(1)
+            if (e.status_code == "400"):
+                raise e
     return ret
 
 def add_username(username):
