@@ -44,7 +44,7 @@ def get_user_posts(user_id):
             ret = API_Queue[0].user_recent_media(user_id=user_id, count=10)
             break
         except InstagramAPIError as e:
-            #print e.status_code
+            print e.status_code
             if (int(e.status_code) == 429):
                 print "Switching API key"
                 getNextApi()
