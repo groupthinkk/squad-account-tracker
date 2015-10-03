@@ -16,7 +16,7 @@ db = client['SQUAD']
 def getNextApi():
     global API_Queue
     ret = API_Queue.popleft()
-    print ret
+    #print ret
     #print API_Queue
     return ret
 
