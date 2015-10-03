@@ -41,14 +41,14 @@ def get_user_posts(user_id):
     while(1):
         try:
             #print API_Queue
-            print "trying to get user posts"
+            #print "trying to get user posts"
             ret = API_Queue[0].user_recent_media(user_id=user_id, count=10)
-            print "Got user posts"
+            #print "Got user posts"
             break
         except InstagramAPIError as e:
-            print e.status_code
+            #print e.status_code
             if (int(e.status_code) == 429):
-                print API_Queue
+                #print API_Queue
                 getNextApi()
                 if (len(API_Queue) == 0):
                     print "Out of API keys"
@@ -63,7 +63,6 @@ def add_username(username):
         return False
     while(1):
         try:
-            print "Username, ", API_Queue[0]
             datalist = API_Queue[0].user_search(username, 100)
             break
         except InstagramAPIError as e:
@@ -71,7 +70,6 @@ def add_username(username):
                 print API_Queue
                 getNextApi()
                 if (len(API_Queue) == 0):
-                    print "Out of API keys"
                     sys.exit(0)
     for data in datalist:
         if data.username == username:
