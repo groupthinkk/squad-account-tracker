@@ -17,7 +17,7 @@ def getNextApi():
     global API_Queue
     ret = API_Queue.popleft()
     print ret
-    print API_Queue
+    #print API_Queue
     return ret
 
 def add_API_key(client_id = None, client_secret = None, access_token = None):
