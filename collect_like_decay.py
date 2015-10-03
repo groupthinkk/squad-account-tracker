@@ -1,20 +1,23 @@
 from instagram.client import InstagramAPI
 from instagram.bind import InstagramAPIError
 from pymongo import MongoClient
+from collections import deque
 import sys
 import time
 import io
 import csv
 import datetime as dt
 
-API_Queue = []
+API_Queue = deque()
 
 client = MongoClient()
 db = client['SQUAD']
 
 def getNextApi():
     global API_Queue
-    ret = API_Queue.pop()
+    ret = API_Queue.popleft()
+    print ret
+    print API_Queue
     return ret
 
 def add_API_key(client_id = None, client_secret = None, access_token = None):
@@ -59,7 +62,7 @@ def add_username(username):
             datalist = API_Queue[0].user_search(username, 100)
             break
         except InstagramAPIError as e:
-            if (e.status_code == 429):
+            if (e.status_code == "429"):
                 getNextApi()
                 if (len(API_Queue) == 0):
                     print "Ran out of API keys"
