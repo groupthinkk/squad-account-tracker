@@ -1,4 +1,4 @@
-from flask import Flask, make_response, render_template, request
+from flask import Flask, make_response, render_template, request, redirect, url_for
 import collect_follower_count
 import turk_functions
 import collect_like_decay
@@ -59,6 +59,11 @@ def download_like_csv():
     response = make_response(output)
     response.headers["Content-Disposition"] = "attachment; filename=like_data_" + str(dt.datetime.now().date()) + ".csv"
     return response
+
+@app.route('/initapikeys', methods = ["GET"])
+def init_api_keys():
+    collect_like_decay.init_API_queue()
+    return redirect(url_for('/'))
 
 if __name__ == '__main__':
     app.run(debug=True)
