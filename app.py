@@ -1,6 +1,7 @@
 from flask import Flask, make_response, render_template, request
 import collect_follower_count
 import turk_functions
+import collect_like_decay
 from flask.ext.basicauth import BasicAuth
 from hashlib import sha512
 import datetime as dt
@@ -25,6 +26,12 @@ def index():
                 account_list = request.form['account_list'].split(",")
                 for account in account_list:
                     collect_follower_count.add_username(account)
+        if 'like_account_list' in request.form:
+            raw_account_string = request.form['like_account_list']
+            if raw_account_string != "":
+                account_list = request.form['like_account_list'].split(",")
+                for account in account_list:
+                    collect_like_decay.add_username(account)
         elif 'bonus' in request.form:
             worker_id_list = request.form['worker_id_list'].split(",")
             hit_id = request.form['hit_id']
@@ -44,6 +51,13 @@ def download_csv():
     output = collect_follower_count.serve_account_data()
     response = make_response(output)
     response.headers["Content-Disposition"] = "attachment; filename=account_data_" + str(dt.datetime.now().date()) + ".csv"
+    return response
+
+@app.route('/downloadlikecsv', methods = ["GET"])
+def download_like_csv():
+    output = collect_like_decay.write_data_to_server()
+    response = make_response(output)
+    response.headers["Content-Disposition"] = "attachment; filename=like_data_" + str(dt.datetime.now().date()) + ".csv"
     return response
 
 if __name__ == '__main__':
