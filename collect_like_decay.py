@@ -66,6 +66,7 @@ def add_username(username):
             break
         except InstagramAPIError as e:
             if (int(e.status_code) == 429):
+                print API_Queue
                 getNextApi()
                 if (len(API_Queue) == 0):
                     print "Out of API keys"
