@@ -48,6 +48,7 @@ def get_user_posts(user_id):
         except InstagramAPIError as e:
             print e.status_code
             if (int(e.status_code) == 429):
+                print API_Queue
                 getNextApi()
                 if (len(API_Queue) == 0):
                     print "Out of API keys"
@@ -62,6 +63,7 @@ def add_username(username):
         return False
     while(1):
         try:
+            print "Username, ", API_Queue[0]
             datalist = API_Queue[0].user_search(username, 100)
             break
         except InstagramAPIError as e:
