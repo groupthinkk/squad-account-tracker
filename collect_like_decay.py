@@ -37,16 +37,18 @@ def init_API_queue():
 def get_user_posts(user_id):
     while(1):
         try:
+            print API_Queue
             print "trying to get user posts"
             ret = API_Queue[0].user_recent_media(user_id=user_id, count=10)
             print "Got user posts"
             break
         except InstagramAPIError as e:
+            print e.status_code
             if (e.status_code == 429):
                 getNextApi()
                 if (len(API_Queue) == 0):
                     print "Ran out of API keys"
-                    sys.exit(0)
+                    sys.exit(1)
     return ret
 
 def add_username(username):
