@@ -48,14 +48,13 @@ def get_user_posts(user_id):
         except InstagramAPIError as e:
             print e.status_code
             print e.status_code == 429
-            print e.status_code == "429"
-            if (e.status_code == 429):
+            if (e.status_code == "429"):
                 print "got in the box"
                 getNextApi()
                 if (len(API_Queue) == 0):
                     print "Ran out of API keys"
                     sys.exit(1)
-            if (e.status_code == 400):
+            if (e.status_code == "400"):
                 print "User %s is private" % (user_id)
     return ret
 
@@ -67,7 +66,7 @@ def add_username(username):
             datalist = API_Queue[0].user_search(username, 100)
             break
         except InstagramAPIError as e:
-            if (e.status_code == 429):
+            if (e.status_code == "429"):
                 getNextApi()
                 if (len(API_Queue) == 0):
                     print "Ran out of API keys"
