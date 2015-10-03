@@ -50,6 +50,7 @@ def get_user_posts(user_id):
             if (int(e.status_code) == 429):
                 getNextApi()
                 if (len(API_Queue) == 0):
+                    print "Out of API keys"
                     sys.exit(1)
             if (int(e.status_code) == 400):
                 print "User %s is private" % (user_id)
@@ -67,6 +68,7 @@ def add_username(username):
             if (int(e.status_code) == 429):
                 getNextApi()
                 if (len(API_Queue) == 0):
+                    print "Out of API keys"
                     sys.exit(0)
     for data in datalist:
         if data.username == username:
