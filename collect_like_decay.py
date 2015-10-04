@@ -100,7 +100,7 @@ def do_pull():
         db['like_log'].insert(data_list)
 
 def export_like_data(f):
-    data = db['like_log'].find().sort([('username', 1), ('post_id', 1), ('time', 1)])
+    data = db['like_log'].find()
     fieldnames = list(data[0].keys())
     fieldnames.remove("_id")
     writer = csv.DictWriter(f, fieldnames=fieldnames)
