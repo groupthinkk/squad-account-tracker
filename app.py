@@ -55,10 +55,15 @@ def download_csv():
 
 @app.route('/downloadlikecsv', methods = ["GET"])
 def download_like_csv():
-    output = collect_like_decay.write_data_to_server()
-    response = make_response(output)
-    response.headers["Content-Disposition"] = "attachment; filename=like_data_" + str(dt.datetime.now().date()) + ".csv"
-    return response
+    try:
+        output = collect_like_decay.write_data_to_server()
+        response = make_response(output)
+        response.headers["Content-Disposition"] = "attachment; filename=like_data_" + str(dt.datetime.now().date()) + ".csv"
+        return response
+    except Exception as e:
+        print e
+        return e
+
 
 @app.route('/initapikeys', methods = ["GET"])
 def init_api_keys():
