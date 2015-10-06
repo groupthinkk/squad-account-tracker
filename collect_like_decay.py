@@ -105,9 +105,24 @@ def export_like_data(f):
     fieldnames.remove("_id")
     writer = csv.DictWriter(f, fieldnames=fieldnames)
     writer.writeheader()
+    post_dict = {}
     for entry in data:
         del entry['_id']
-        writer.writerow(entry)
+        if entry['post_id'] in post_dict:
+            post_dict[entry['post_id']].append(entry)
+        else:
+            post_dict[entry['post_id']] = [entry]
+    for key in post_dict:
+        post_list = post_dict[key]
+        include = False
+        for post in post_list:
+            if post['time'] - post['created_time'] < dt.timedelta(minutes=10):
+                include = True
+                break
+        if include:
+            entry_list = sorted(post_list, key=lambda k: k['time'])
+            for entry in entry_list:
+                writer.writerow(entry)
 
 def write_data_to_file():
     f = open("like_data.csv", "w")
