@@ -100,29 +100,20 @@ def do_pull():
         db['like_log'].insert(data_list)
 
 def export_like_data(f):
-    data = db['like_log'].find()
-    fieldnames = list(data[0].keys())
-    fieldnames.remove("_id")
+    fieldnames = ['post_id', 'likes', 'comments', 'username', 'user_id', 'created_time', 'time']
     writer = csv.DictWriter(f, fieldnames=fieldnames)
     writer.writeheader()
-    post_dict = {}
-    for entry in data:
-        del entry['_id']
-        if entry['post_id'] in post_dict:
-            post_dict[entry['post_id']].append(entry)
-        else:
-            post_dict[entry['post_id']] = [entry]
-    print "got here"
-    for key, value in post_dict.iteritems():
-        post_list = value
+    post_ids = db['like_log'].distinct('post_id')
+    for post_id in post_ids:
+        data = db['like_log'].find({'post_id':post_id}).sort('time',1)
         include = False
-        for post in iter(post_list):
-            if post['time'] - post['created_time'] < dt.timedelta(minutes=10):
+        for entry in data:
+            if entry['time'] - entry['created_time'] < dt.timedelta(minutes=10):
                 include = True
                 break
         if include:
-            entry_list = sorted(post_list, key=lambda k: k['time'])
-            for entry in iter(entry_list):
+            data.rewind()
+            for entry in data:
                 writer.writerow(entry)
 
 def write_data_to_file():
