@@ -114,6 +114,7 @@ def export_like_data(f):
         if include:
             data.rewind()
             for entry in data:
+                del entry['_id']
                 writer.writerow(entry)
 
 def write_data_to_file():
