@@ -112,16 +112,17 @@ def export_like_data(f):
             post_dict[entry['post_id']].append(entry)
         else:
             post_dict[entry['post_id']] = [entry]
-    for key in post_dict:
-        post_list = post_dict[key]
+    print "got here"
+    for key, value in post_dict.iteritems():
+        post_list = value
         include = False
-        for post in post_list:
+        for post in iter(post_list):
             if post['time'] - post['created_time'] < dt.timedelta(minutes=10):
                 include = True
                 break
         if include:
             entry_list = sorted(post_list, key=lambda k: k['time'])
-            for entry in entry_list:
+            for entry in iter(entry_list):
                 writer.writerow(entry)
 
 def write_data_to_file():
