@@ -26,7 +26,7 @@ def index():
                 account_list = request.form['account_list'].split(",")
                 for account in account_list:
                     collect_follower_count.add_username(account)
-        if 'like_account_list' in request.form:
+        elif 'like_account_list' in request.form:
             raw_account_string = request.form['like_account_list']
             if raw_account_string != "":
                 account_list = sorted(request.form['like_account_list'].split(","))
