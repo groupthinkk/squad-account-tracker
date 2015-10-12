@@ -1,3 +1,5 @@
+#!/usr/bin/env python 
+
 from instagram.client import InstagramAPI
 from instagram.bind import InstagramAPIError
 from pymongo import MongoClient
