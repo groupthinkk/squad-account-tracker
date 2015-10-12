@@ -106,16 +106,12 @@ def export_like_data(f):
     post_ids = db['like_log'].distinct('post_id')
     for post_id in post_ids:
         data = db['like_log'].find({'post_id':post_id}).sort('time',1)
-        include = False
-        for entry in data:
-            if entry['time'] - entry['created_time'] < dt.timedelta(minutes=10):
-                include = True
-                break
-        if include:
+        if data[0]['time'] - data[0]['created_time'] < dt.timedelta(minutes=10):
             data.rewind()
             for entry in data:
                 del entry['_id']
                 writer.writerow(entry)
+            
 
 def write_data_to_file():
     f = open("like_data.csv", "w")
