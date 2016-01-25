@@ -50,7 +50,7 @@ def get_follower_count(username, user_id):
         }
         db['account_data'].insert(entry)
     except:
-        print username, r.text
+        print username, r
 
 
 def process_account_list(account_list):
