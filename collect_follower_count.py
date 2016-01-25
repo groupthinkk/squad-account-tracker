@@ -40,14 +40,17 @@ def get_account_list():
 def get_follower_count(username, user_id):
     url = ('https://api.instagram.com/v1/users/%s/?access_token=%s') % (user_id, access_token)
     r = requests.get(url).json()
-    follow_count = r['data']['counts']['followed_by']
-    entry = {
-        "date": dt.datetime.today(),
-        "username": username,
-        "user_id": user_id,
-        "follow_count": follow_count
-    }
-    db['account_data'].insert(entry)
+    try:
+        follow_count = r['data']['counts']['followed_by']
+        entry = {
+            "date": dt.datetime.today(),
+            "username": username,
+            "user_id": user_id,
+            "follow_count": follow_count
+        }
+        db['account_data'].insert(entry)
+    except:
+        print username, r.text
 
 
 def process_account_list(account_list):
